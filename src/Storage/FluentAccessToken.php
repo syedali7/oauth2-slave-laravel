@@ -13,6 +13,7 @@ namespace LucaDegasperi\OAuth2Server\Storage;
 
 use Carbon\Carbon;
 use League\OAuth2\Server\Entity\AccessTokenEntity;
+use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entity\ScopeEntity;
 use League\OAuth2\Server\Storage\AccessTokenInterface;
 
@@ -32,7 +33,7 @@ class FluentAccessToken extends AbstractFluentAdapter implements AccessTokenInte
      */
     public function get($token)
     {
-        $result = $this->getConnection()->table('oauth_access_tokens')
+        $result = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_access_tokens')
                 ->where('oauth_access_tokens.id', $token)
                 ->first();
 
@@ -73,7 +74,7 @@ class FluentAccessToken extends AbstractFluentAdapter implements AccessTokenInte
      */
     public function getScopes(AccessTokenEntity $token)
     {
-        $result = $this->getConnection()->table('oauth_access_token_scopes')
+        $result = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_access_token_scopes')
                 ->select('oauth_scopes.*')
                 ->join('oauth_scopes', 'oauth_access_token_scopes.scope_id', '=', 'oauth_scopes.id')
                 ->where('oauth_access_token_scopes.access_token_id', $token->getId())

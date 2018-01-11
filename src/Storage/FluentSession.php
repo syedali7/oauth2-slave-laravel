@@ -17,6 +17,7 @@ use League\OAuth2\Server\Entity\AuthCodeEntity;
 use League\OAuth2\Server\Entity\ScopeEntity;
 use League\OAuth2\Server\Entity\SessionEntity;
 use League\OAuth2\Server\Storage\SessionInterface;
+use Illuminate\Support\Facades\DB;
 
 /**
  * This is the fluent session class.
@@ -56,7 +57,7 @@ class FluentSession extends AbstractFluentAdapter implements SessionInterface
      */
     public function getByAccessToken(AccessTokenEntity $accessToken)
     {
-        $result = $this->getConnection()->table('oauth_sessions')
+        $result = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_sessions')
                 ->select('oauth_sessions.*')
                 ->join('oauth_access_tokens', 'oauth_sessions.id', '=', 'oauth_access_tokens.session_id')
                 ->where('oauth_access_tokens.id', $accessToken->getId())
@@ -81,7 +82,7 @@ class FluentSession extends AbstractFluentAdapter implements SessionInterface
     public function getScopes(SessionEntity $session)
     {
         // TODO: Check this before pushing
-        $result = $this->getConnection()->table('oauth_session_scopes')
+        $result = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_session_scopes')
                   ->select('oauth_scopes.*')
                   ->join('oauth_scopes', 'oauth_session_scopes.scope_id', '=', 'oauth_scopes.id')
                   ->where('oauth_session_scopes.session_id', $session->getId())
@@ -148,7 +149,7 @@ class FluentSession extends AbstractFluentAdapter implements SessionInterface
      */
     public function getByAuthCode(AuthCodeEntity $authCode)
     {
-        $result = $this->getConnection()->table('oauth_sessions')
+        $result = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_sessions')
             ->select('oauth_sessions.*')
             ->join('oauth_auth_codes', 'oauth_sessions.id', '=', 'oauth_auth_codes.session_id')
             ->where('oauth_auth_codes.id', $authCode->getId())

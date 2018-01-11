@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use League\OAuth2\Server\Entity\ScopeEntity;
 use League\OAuth2\Server\Storage\ScopeInterface;
 
+
 /**
  * This is the fluent scope class.
  *

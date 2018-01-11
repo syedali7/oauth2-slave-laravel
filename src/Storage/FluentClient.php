@@ -16,6 +16,7 @@ use Illuminate\Database\ConnectionResolverInterface as Resolver;
 use League\OAuth2\Server\Entity\ClientEntity;
 use League\OAuth2\Server\Entity\SessionEntity;
 use League\OAuth2\Server\Storage\ClientInterface;
+use Illuminate\Support\Facades\DB;
 
 /**
  * This is the fluent client class.
@@ -78,7 +79,7 @@ class FluentClient extends AbstractFluentAdapter implements ClientInterface
         $query = null;
 
         if (!is_null($redirectUri) && is_null($clientSecret)) {
-            $query = $this->getConnection()->table('oauth_clients')
+            $query = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_clients')
                    ->select(
                        'oauth_clients.id as id',
                        'oauth_clients.secret as secret',
@@ -88,7 +89,7 @@ class FluentClient extends AbstractFluentAdapter implements ClientInterface
                    ->where('oauth_clients.id', $clientId)
                    ->where('oauth_client_endpoints.redirect_uri', $redirectUri);
         } elseif (!is_null($clientSecret) && is_null($redirectUri)) {
-            $query = $this->getConnection()->table('oauth_clients')
+            $query = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_clients')
                    ->select(
                        'oauth_clients.id as id',
                        'oauth_clients.secret as secret',
@@ -96,7 +97,7 @@ class FluentClient extends AbstractFluentAdapter implements ClientInterface
                    ->where('oauth_clients.id', $clientId)
                    ->where('oauth_clients.secret', $clientSecret);
         } elseif (!is_null($clientSecret) && !is_null($redirectUri)) {
-            $query = $this->getConnection()->table('oauth_clients')
+            $query = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_clients')
                    ->select(
                        'oauth_clients.id as id',
                        'oauth_clients.secret as secret',
@@ -132,7 +133,7 @@ class FluentClient extends AbstractFluentAdapter implements ClientInterface
      */
     public function getBySession(SessionEntity $session)
     {
-        $result = $this->getConnection()->table('oauth_clients')
+        $result = DB::connection(env('MYSQL_SLAVE', 'slave_mysql'))->table('oauth_clients')
                 ->select(
                     'oauth_clients.id as id',
                     'oauth_clients.secret as secret',
