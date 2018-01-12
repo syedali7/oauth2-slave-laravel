@@ -5,12 +5,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Luca Degasperi",
-            "email": "packages@lucadegasperi.com"
-        },
-        {
-            "name": "Vincent Klaiber",
-            "email": "hello@vinkla.com"
+            "name": "Syed Ali",
+            "email": "syedali0111@gmail.com"
         }
     ],
     "require": {
@@ -47,11 +43,5 @@
             "tests/integration/AbstractDBTestCase.php"
         ]
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "5.2-dev"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "minimum-stability": "dev"
 }
