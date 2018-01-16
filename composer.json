@@ -43,5 +43,6 @@
             "tests/integration/AbstractDBTestCase.php"
         ]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "6.1.0",
+    "prefer-stable": true
 }
